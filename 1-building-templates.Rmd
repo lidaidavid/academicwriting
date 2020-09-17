@@ -1,0 +1,19 @@
+---
+title: "Untitled"
+author: "dai li"
+date: "2020/9/17"
+output: html_document
+---
+
+```{r}
+if (!require("pacman")) install.packages("pacman"); library(pacman)
+p_load(devtools, officer, officedown)
+```
+
+```{r 社会学研究}
+use_rmarkdown_template(template_name = "shehuixueyanjiu",
+                       template_description = "社会学研究论文模板"
+                       )
+```
+
+
