@@ -82,8 +82,9 @@ install_github("lidaidavid/academicwriting")
 # pour_eng_bib_rmd(text, csl_eng, output)
 
 
-parameters<- read_csv("build_parameters.csv")
-use_data(parameters, internal = T)
+build_parameters <- read_csv("build_parameters.csv")
+use_data(build_parameters, internal = T, overwrite = T)
+
 ```
 
 
