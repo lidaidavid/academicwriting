@@ -48,7 +48,7 @@ add_ending <- function(text, child){
 }
 
 build_rmd <- function(file, name){
-  build_parameters <- load("data/parameters.rda")
+  build_parameters <- load("sysdata.rda")
   dt <- subset(build_parameters, name == name)
   output <- dt$output
   opening	<- dt$opening

@@ -10,7 +10,7 @@ output:
 ```{r}
 if (!require("pacman")) install.packages("pacman"); library(pacman)
 p_load(devtools, officer, officedown, knitr, rmarkdown, tidyverse, qdapRegex, readxl, stringi, yaml, roxygen2)
-
+install_github("lidaidavid/academicwriting")
 
 ```
 
@@ -83,9 +83,7 @@ p_load(devtools, officer, officedown, knitr, rmarkdown, tidyverse, qdapRegex, re
 
 
 parameters<- read_csv("build_parameters.csv")
-saveRDS(parameters, file = "build_parameters.rds")
-
-use_data(parameters)
+use_data(parameters, internal = T)
 ```
 
 
