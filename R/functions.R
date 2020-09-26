@@ -1,5 +1,5 @@
 if (!require("pacman")) install.packages("pacman"); library(pacman)
-p_load(devtools, officer, officedown, knitr, rmarkdown, tidyverse, qdapRegex, readxl, stringi, yaml)
+p_load(officer, officedown, knitr, rmarkdown, tidyverse, qdapRegex, readxl)
 
 
 
@@ -48,7 +48,7 @@ add_ending <- function(text, child){
 }
 
 build_rmd <- function(file, name){
-  build_parameters <- read_rds("build_parameters.rds")
+  build_parameters <- load("data/parameters.rda")
   dt <- subset(build_parameters, name == name)
   output <- dt$output
   opening	<- dt$opening
