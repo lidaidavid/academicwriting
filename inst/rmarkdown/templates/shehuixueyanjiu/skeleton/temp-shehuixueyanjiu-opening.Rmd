@@ -1,0 +1,45 @@
+
+```{r }
+abstract_text1 <- fp_text(font.size = 9, 
+              bold = F, 
+              font.family = "SimHei",
+              underlined = F
+              )
+
+abstract_text2 <- fp_text(font.size = 9, 
+              bold = F, 
+              font.family = "FangSong",
+              underlined = F
+              )
+
+get_author <- function(author){
+  author_text <- character()
+  for (i in 1:length(author)) {
+    temp_a <- ifelse(nchar(author[i]) == 2, str_c(str_sub(author[i], 1,1),"   ",str_sub(author[i], 2,2)), author[i])
+    author_text <- c(author_text, temp_a)
+  }
+  author_text <- str_c(author_text, collapse = "  ")
+  return(author_text)
+
+  }
+
+author_str <- get_author(author_names)
+
+author_text <- fp_text(font.size = 12, 
+              bold = F, 
+              font.family = "KaiTi_GB2312",
+              underlined = F
+              )
+
+author_para <- fp_par(text.align = "center",
+                        line_spacing = 1,
+                        padding.bottom = 0, 
+                        padding.top = 0)
+
+
+```
+
+`r ftext('提要：', abstract_text1)``r ftext(abstract, abstract_text2)`
+
+`r ftext('关键词：', abstract_text1)``r ftext(str_c(keywords, collapse = "  "), abstract_text2)`
+

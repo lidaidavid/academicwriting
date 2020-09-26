@@ -1,19 +1,224 @@
 ---
-title: "Untitled"
+title: "building templates"
 author: "dai li"
 date: "2020/9/17"
-output: html_document
+output:
+  word_document: default
+  html_document: default
 ---
 
 ```{r}
 if (!require("pacman")) install.packages("pacman"); library(pacman)
-p_load(devtools, officer, officedown)
+p_load(devtools, officer, officedown, knitr, rmarkdown, tidyverse, qdapRegex, readxl, stringi, yaml, roxygen2)
 ```
 
-```{r 社会学研究}
-use_rmarkdown_template(template_name = "shehuixueyanjiu",
-                       template_description = "社会学研究论文模板"
-                       )
+```{r functions}
+# 
+# # 读入rmd文档中的所有英文引用，让他们不在正文出现
+# bibintext_eng <- function(text){
+#   out <- text
+#   bib <- out %>% str_extract_all(" @([A-Z]|[a-z])[:graph:]+") %>% unlist() %>% str_c(collapse = ", ")
+#   head <- c("nocite: | ", str_c("  ", bib))
+#   return(head)
+# }
+# 
+# # 读入参考文献库
+# bibaftertext <- function(text){
+#   out <- text
+#   bib <- out %>% str_extract("bibliography:.*") 
+#   bib <- bib[bib %>% is.na() == F]
+#   return(bib)
+#   }
+# 
+# # 读入格式模板
+# bib_output <- function(output){
+#   out <- readLines(output, encoding = "UTF-8")
+#   bib <- out %>% str_extract("    reference_docx:.*") 
+#   bib <- bib[bib %>% is.na() == F]
+#   new <- c("output:","  officedown::rdocx_document:", bib)
+#   return(new)
+#   }
+# 
+# # 根据英文的csl生产新文件
+# eng_csl <- function(text, csl, output){
+#   inlinebib <- bibintext_eng(text)
+#   bibliography <- bibaftertext(text)
+#   out <- bib_output(output)
+#   newcsl <- str_c("csl: '",csl, "'")
+#   newrmd <- c("---", 
+#               out,
+#               bibliography,
+#               newcsl,
+#               inlinebib,
+#               "---",
+#               " ")
+#   return(newrmd)
+# }
+# 
+# # 把文件变成word,只能是英文的因为中文会乱码在windows上
+# get_eng_bib_word <- function(text, csl, output){
+#   rmd <- eng_csl(text, csl, output)
+#   writeLines(rmd, "temp_eng_bib_word.rmd")
+#   render("temp_eng_bib_word.rmd")
+#   file.remove("temp_eng_bib_word.rmd")
+# }
+# 
+# ########################################
+# # 把word倒进原文
+# pour_eng_bib_rmd <- function(text, csl, output){
+#   get_eng_bib_word(text, csl, output)
+#   out <- c(text, "`r block_pour_docx(file = 'temp_eng_bib_word.docx')`")
+#   return(out)
+# }
+# 
+# bibintext_eng(text_out)
+# bibaftertext(text)
+# bib_output(output)
+# 
+# eng_csl(text_out, csl_eng, output)
+# get_eng_bib_word(text_out, csl_eng, output)
+# pour_eng_bib_rmd(text, csl_eng, output)
+
+
+parameters<- read_csv("build_parameters.csv")
+saveRDS(parameters, file = "build_parameters.rds")
+
+# set output
+
+add_output <- function(text, child){
+  childdoc <- readLines(child, encoding = "UTF-8")
+  yaml_position <- text %>% str_detect("---") %>% which()
+  start <- yaml_position[2]
+  newtext <- c(text[1:(start-1)], childdoc, text[(start):length(text)])
+  return(newtext)
+}
+
+
+
+# 定制开头
+
+add_opening <- function(text, child){
+  childdoc <- str_c("```{r, child=c('", child, "')}")
+  text <- text %>% str_replace("<!-- opening -->",childdoc)
+  text <- text %>% str_replace("<!-- openingending -->","```")
+
+  return(text)
+}
+
+# 查有几个作者
+author_line <- function(text){
+  out <- text
+  bib <- out %>% str_extract("author_names.*c\\(.*") 
+  bib <- bib[bib %>% is.na() == F]
+  n <- str_count(bib, ",") + 1
+  return(n)
+  }
+
+add_ending <- function(text, child){
+  n <- author_line(text)
+  childdoc <- readLines(child, encoding = "UTF-8")
+  
+  added <- str_c("`r ftext(institute_str[", seq(1,n), "], ft)`")
+  insti <- character()
+  for (i in 1:n) {
+  insti <- c(insti, added[i], "")
+  } 
+  text <- c(text, childdoc, insti) 
+  return(text)
+}
+
+build_rmd <- function(file, name){
+  build_parameters <- read_rds("build_parameters.rds")
+  dt <- subset(build_parameters, name == name)
+  output <- dt$output
+  opening	<- dt$opening
+  ending <- dt$ending
+  
+  text <- readLines(file, encoding = "UTF-8")
+  
+  text_out <- add_output(text, output)
+
+  text_out <- add_opening(text_out, opening)
+
+  if(ending %>% is.na() == F){
+    text_out <- add_ending(text_out, ending)
+    }
+  return(text_out)
+}
+
+
+# https://stackoverflow.com/questions/23699271/force-character-vector-encoding-from-unknown-to-utf-8-in-r
+
+# https://tomizonor.wordpress.com/2013/04/17/file-utf8-windows/
+
 ```
 
 
+
+
+```{r 社会学研究的模板}
+#use_rmarkdown_template(template_name = "shehuixueyanjiu",
+#                       template_description = "a template adhering to the guidlines of the Chinese: Sociological Studies (shehuixueyanjiu)"
+#                       )
+
+build_rmd("test-bare.rmd", "shehuixueyanjiu") %>% writeLines("shehuixueyanjiu.rmd")
+
+# 需要手动改一下编码之后
+render("shehuixueyanjiu.rmd")
+
+
+```
+
+
+
+
+
+
+
+
+```{r}
+
+
+# 渲染正文，用模板
+render_template <- function(rmd, template){
+  yamlstr <- yaml_merge(rmd, template)
+  towrite <- c(yamlstr, yaml_rm(rmd))
+  rmdname <- str_c(rmd %>% str_remove("(.rmd)|(.Rmd)"), "-", template %>% str_remove("(.rmd)|(.Rmd)"), ".rmd")
+  writeLines(towrite, rmdname)
+  render(rmdname)
+}
+
+render_template("trytry.rmd", "testoho.rmd")
+
+render("originaltext.rmd")
+
+```
+
+
+论文由哪些元素组成：
+
+0. 正文
+1. 标题
+2. 副标题
+3. 作者-单位
+4. 摘要
+5. 关键词
+6. 文章内的一级标题
+7. 文章内的二级标题
+8. 文章内的三级标题
+9. 列表项目（有编号）
+10. 列表项目（无编号）
+11. 表
+12. 表头（表上）
+13. 图
+14. 图注（图下）
+15. 引用
+16. 脚注
+17. 日期
+18. 目录
+19. 分页符
+20. 分栏
+21. 参考文献
+22. 编辑
+23. 页边距
+24. 引用段落（缩进）

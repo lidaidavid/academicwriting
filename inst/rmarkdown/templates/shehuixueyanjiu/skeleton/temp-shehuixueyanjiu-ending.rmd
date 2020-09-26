@@ -1,0 +1,34 @@
+
+```{r}
+
+ft <- fp_text(font.size = 10.5, 
+              bold = F, 
+              font.family = "FangSong",
+              underlined = F
+              )
+
+institute_str <- character()
+
+for (i in 1:length(author_names)) {
+  temp_text <- ifelse(i == 1, 
+                 str_c("作者单位：", affiliation[i], "（", author_names[i],"）"), 
+                 str_c(affiliation[i], "（", author_names[i],"）"))
+  institute_str <- c(institute_str, temp_text)
+}
+
+# 一行有29个汉字，一个汉字相当于2个空格，首行缩进2字符
+nspace <- (27 - nchar(institute_str)[1]) * 2
+
+add1 <- rep(" ", nspace) %>% str_c(collapse = "")
+addo <- rep(" ", (nspace + 10)) %>% str_c(collapse = "")
+
+for (i in 1:length(author_names)) {
+  institute_str[i] <- ifelse(i == 1, 
+                             str_c(add1, institute_str[i]), 
+                             str_c(addo, institute_str[i]))
+}
+
+
+```
+
+

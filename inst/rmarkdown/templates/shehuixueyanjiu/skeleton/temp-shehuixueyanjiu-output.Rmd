@@ -1,0 +1,28 @@
+
+csl: "shehuixueyanjiu-csl.csl"
+output: 
+  officedown::rdocx_document:
+    reference_docx: temp-shehuixueyanjiu.docx
+    plots:
+      style: Image Caption
+      align: center
+      caption:
+        style: Image Caption
+        pre: '图 '
+        sep: '  '
+    tables: 
+      style: rmdtable
+      layout: autofit
+      width: 1.0
+      caption:
+        style: Table Caption
+        pre: '表'
+        sep: ''
+      conditional:
+        first_row: true
+        first_column: true
+        last_row: false
+        last_column: false
+        no_hband: false
+        no_vband: true
+

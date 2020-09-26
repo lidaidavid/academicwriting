@@ -1,18 +1,73 @@
+
 ---
-title: "Template Title"
-author: "Your Name"
-date: "The Date"
-output: output_format
+bibliography: "references.bib"
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup, include=FALSE, echo = FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, fig.cap = TRUE)
+if (!require("pacman")) install.packages("pacman"); library(pacman)
+p_load(tidyverse, officer, officedown, knitr, rmarkdown)
+
+# p_load(equatiomatic, DiagrammeR)
+
+title <- ""
+subtitle <- "" 
+author_names <- c("")
+affiliation <- c("")
+abstract <- ""
+keywords <- c("", "", "", "")
+author_str <- str_c(author_names, collapse = "，")
+figures <- read_csv("figures.csv")
+tables <- read_csv("tables.csv")
+
+
+
 ```
 
-## Adding an RMarkdown Template
+<!-- opening -->
+<!-- openingending -->
 
-This file is what a user will see when they select your template. Make sure that you update the fields in the yaml header. In particular you will want to update the `output` field to whatever format your template requires.
 
-This is a good place to demonstrate special features that your template provides. Ideally it should knit out-of-the-box, or at least contain clear instructions as to what needs changing.
+\newpage
 
-Finally, be sure to remove this message!
+# 一级标题
+
+## 二级标题
+
+### 三级标题
+
+##### 强调
+
+中文中文内容内容 [^1]。引用文献 @陈思2018
+
+[^1]: 这是脚注。
+
+m quam, at euismod massa magna at magna. @Hyde2009
+
+
+# 图
+
+```{r fig.cap="一张图", fig.id = "boxplot", fig.width=4, fig.height=3}
+boxplot(1:8)
+```
+
+# 表
+
+```{r tab.cap="一张表", tab.id="cars"}
+head(cars)
+```
+
+
+---
+title: "`r title`"
+subtitle: "`r str_c('——', subtitle)`"
+author: "`r author_str`"
+---
+
+#### 参考文献
+
+<div id="refs"></div>
+ 
+ 
+ 
+ 
