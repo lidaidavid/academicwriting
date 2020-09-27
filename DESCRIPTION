@@ -1,5 +1,5 @@
 Package: academicwriting
-Title: 
+Title: WriteAcademicInR
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Dai",
@@ -15,3 +15,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Depends: 
     R (>= 2.10)
+Imports:
+    stringr
+Suggests: 
+    testthat

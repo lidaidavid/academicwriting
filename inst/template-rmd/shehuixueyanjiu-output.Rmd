@@ -1,8 +1,10 @@
 
-csl: "shehuixueyanjiu-csl.csl"
+csl: "0-shehuixueyanjiu-csl.csl"
 output: 
   officedown::rdocx_document:
-    reference_docx: temp-shehuixueyanjiu.docx
+    base_format:
+      bookdown::word_document2
+    reference_docx: 0-shehuixueyanjiu-template.docx
     plots:
       style: Image Caption
       align: center

@@ -1,0 +1,64 @@
+---
+title: "building templates"
+author: "dai li"
+date: "2020/9/17"
+output:
+  word_document: default
+  html_document: default
+---
+
+```{r}
+if (!require("pacman")) install.packages("pacman"); library(pacman)
+p_load(academicwriting)
+```
+
+
+```{r 社会学研究的模板}
+#use_rmarkdown_template(template_name = "shehuixueyanjiu",
+#                       template_description = "a template adhering to the guidlines of the Chinese: Sociological Studies (shehuixueyanjiu)"
+#                       )
+
+# file: 正文
+# target：格式调整之后成文
+
+file <- 
+target <- 
+
+
+build_rmd(file, "shehuixueyanjiu") %>% writeLines(target)
+
+# 需要用notepad++手动改一下编码到utf8之后
+render(target)
+
+
+```
+
+
+
+论文由哪些元素组成：
+
+0. 正文
+1. 标题
+2. 副标题
+3. 作者-单位
+4. 摘要
+5. 关键词
+6. 文章内的一级标题
+7. 文章内的二级标题
+8. 文章内的三级标题
+9. 列表项目（有编号）
+10. 列表项目（无编号）
+11. 表
+12. 表头（表上）
+13. 图
+14. 图注（图下）
+15. 引用
+16. 脚注
+17. 日期
+18. 目录
+19. 分页符
+20. 分栏
+21. 参考文献
+22. 编辑
+23. 页边距
+24. 引用段落（缩进）

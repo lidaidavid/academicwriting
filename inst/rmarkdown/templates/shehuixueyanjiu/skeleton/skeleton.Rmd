@@ -1,6 +1,6 @@
 
 ---
-bibliography: "references.bib"
+bibliography: "0-references.bib"
 ---
 
 ```{r setup, include=FALSE, echo = FALSE}
@@ -17,15 +17,14 @@ affiliation <- c("")
 abstract <- ""
 keywords <- c("", "", "", "")
 author_str <- str_c(author_names, collapse = "，")
-figures <- read_csv("figures.csv")
-tables <- read_csv("tables.csv")
+figures <- read_csv("0-figures.csv")
+tables <- read_csv("0-tables.csv")
 
 
 
 ```
 
 <!-- opening -->
-<!-- openingending -->
 
 
 \newpage
@@ -60,7 +59,7 @@ head(cars)
 
 ---
 title: "`r title`"
-subtitle: "`r str_c('——', subtitle)`"
+subtitle: "`r ifelse(subtitle == "", "", "str_c('——', subtitle)")`"
 author: "`r author_str`"
 ---
 

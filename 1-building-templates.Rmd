@@ -8,13 +8,78 @@ output:
 ---
 
 ```{r}
-if (!require("pacman")) install.packages("pacman"); library(pacman)
-p_load(devtools, officer, officedown, knitr, rmarkdown, tidyverse, qdapRegex, readxl, stringi, yaml, roxygen2)
-install_github("lidaidavid/academicwriting")
+if (!require("pacman")) install.packages("pacman"); library(pacman); p_load(devtools, officer, officedown, knitr, rmarkdown, tidyverse, qdapRegex, readxl, stringi, yaml, roxygen2)
+# install_github("lidaidavid/academicwriting")
+
+
+# p_load(available)
+# available("academicwriting")
+
 
 ```
 
 ```{r functions}
+
+build_parameters <- read_csv("build_parameters.csv")
+use_data(build_parameters, internal = T, overwrite = T)
+
+document()
+load_all()
+test()
+check()
+```
+
+
+
+
+```{r 社会学研究的模板}
+#use_rmarkdown_template(template_name = "shehuixueyanjiu",
+#                       template_description = "a template adhering to the guidlines of the Chinese: Sociological Studies (shehuixueyanjiu)"
+#                       )
+
+setwd("D:/nuts/1-building-templates/academicwriting/inst/rmarkdown/templates/shehuixueyanjiu/skeleton")
+
+build_rmd("skeleton.rmd", "shehuixueyanjiu") %>% writeLines("test-shehuixueyanjiu.rmd")
+
+# 需要手动改一下编码之后
+render("test-shehuixueyanjiu.rmd")
+kankan <- readLines("shehuixueyanjiu.rmd")
+
+```
+
+
+
+
+
+论文由哪些元素组成：
+
+0. 正文
+1. 标题
+2. 副标题
+3. 作者-单位
+4. 摘要
+5. 关键词
+6. 文章内的一级标题
+7. 文章内的二级标题
+8. 文章内的三级标题
+9. 列表项目（有编号）
+10. 列表项目（无编号）
+11. 表
+12. 表头（表上）
+13. 图
+14. 图注（图下）
+15. 引用
+16. 脚注
+17. 日期
+18. 目录
+19. 分页符
+20. 分栏
+21. 参考文献
+22. 编辑
+23. 页边距
+24. 引用段落（缩进）
+
+```{r}
 # 
 # # 读入rmd文档中的所有英文引用，让他们不在正文出现
 # bibintext_eng <- function(text){
@@ -81,56 +146,5 @@ install_github("lidaidavid/academicwriting")
 # get_eng_bib_word(text_out, csl_eng, output)
 # pour_eng_bib_rmd(text, csl_eng, output)
 
-
-build_parameters <- read_csv("build_parameters.csv")
-use_data(build_parameters, internal = T, overwrite = T)
-
 ```
 
-
-
-
-```{r 社会学研究的模板}
-#use_rmarkdown_template(template_name = "shehuixueyanjiu",
-#                       template_description = "a template adhering to the guidlines of the Chinese: Sociological Studies (shehuixueyanjiu)"
-#                       )
-
-build_rmd("test-bare.rmd", "shehuixueyanjiu") %>% writeLines("shehuixueyanjiu.rmd")
-
-# 需要手动改一下编码之后
-render("shehuixueyanjiu.rmd")
-
-
-```
-
-
-
-
-
-论文由哪些元素组成：
-
-0. 正文
-1. 标题
-2. 副标题
-3. 作者-单位
-4. 摘要
-5. 关键词
-6. 文章内的一级标题
-7. 文章内的二级标题
-8. 文章内的三级标题
-9. 列表项目（有编号）
-10. 列表项目（无编号）
-11. 表
-12. 表头（表上）
-13. 图
-14. 图注（图下）
-15. 引用
-16. 脚注
-17. 日期
-18. 目录
-19. 分页符
-20. 分栏
-21. 参考文献
-22. 编辑
-23. 页边距
-24. 引用段落（缩进）
