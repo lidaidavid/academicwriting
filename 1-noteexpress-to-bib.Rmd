@@ -1,0 +1,104 @@
+---
+title: "turn note express to bib"
+author: "dai li"
+date: "2020/9/29"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+if (!require("pacman")) install.packages("pacman"); library(pacman); p_load(devtools, officer, officedown, knitr, rmarkdown, tidyverse, qdapRegex, readxl, stringi, yaml, roxygen2, pinyin)
+
+bib <- readLines("D:/literature/0bib/original-rep.txt", encoding = "UTF-8")
+
+
+bib2 <- str_c(bib, collapse = "^")
+
+bib3 <- bib2 %>% str_split("CNKI")
+
+bib4 <- bib3[[1]][bib3[[1]] %>% str_detect("\\{Author\\}")]
+
+
+
+extracing_elements <- function(str, bib){
+  out <- str_extract_all(bib, str_c("\\{",str,"\\}:.*?\\^"), simplify = T)[str_extract_all(bib, str_c("\\{",str,"\\}:.*?\\^"), simplify = T) != ""]
+  out <- out %>% str_remove_all(str_c("\\{",str,"\\}: "))
+  out <- out %>% str_remove_all(str_c("\\^"))
+
+  return(out)
+}
+
+
+new_bib <- extracing_elements("Title", bib4) %>% as.data.frame()
+
+colnames(new_bib) <- "title"
+
+new_bib$author <- extracing_elements("Author", bib4)
+
+new_bib$author <- extracing_elements("Author", bib4)
+
+new_bib$journal <- extracing_elements("Journal", bib4)
+new_bib$year <- extracing_elements("Year", bib4)
+new_bib$number <- extracing_elements("Issue", bib4)
+new_bib$volume <- extracing_elements("Volume", bib4)
+new_bib$pages <- extracing_elements("Pages", bib4)
+new_bib$author_new <- new_bib$author %>% str_remove_all("(;$)") %>% str_replace_all(";", " and ")
+
+
+py("技术自主性与国家形", dic = pydic(method = "toneless"), sep = "")
+```
+
+```{r}
+
+zuozhe <- new_bib$author %>% str_remove_all(";")
+pinyin <- character()
+
+
+for (i in 1:length(zuozhe)) {
+  pinyin <- c(pinyin, py(zuozhe[i], dic = pydic(method = "toneless"), sep = "")
+)
+}
+
+
+new_bib$note <- pinyin %>% str_remove_all("(li/)|(la/)|(dan/)|(chen/)|(ju/)|(gou/)|(ni/)|(ruo/)|(xing/)|(hang/)|(ling/)|(suo/|(ruo/))")
+
+# saveRDS(new_bib, file = "bib_2journals.rds")
+# write_excel_csv(new_bib, "D:/literature/0bib/bib-2journals2.csv")
+
+new_bib <- readRDS("bib_2journals.rds")
+readr::write
+
+new_bib$id <- seq(1, nrow(new_bib))
+head(new_bib)
+
+```
+
+```{r}
+lineup <- function(bib){
+  line1 <- "@Article{,"
+  line2 <- str_c("author  = {", bib$author_new, "},")
+  line3 <- str_c("journal = {", bib$journal, "},")
+  line4 <- str_c("title   = {", bib$title, "},")
+  line5 <- str_c("year    = {", bib$year, "},")
+  line6 <- str_c("note    = {", bib$note, "},")
+  line7 <- str_c("number  = {", bib$number, "},")
+  line8 <- str_c("pages   = {", bib$pages, "},")
+  line9 <- str_c("volume  = {", bib$volume, "},")
+  line10 <-  "},"
+  line11 <-  ""
+  out <- c(line1, line2, line3, line4, line5, line6, line7, line8, line9, line10, line11)
+  return(out)
+}
+
+new_bib_file <- character()
+
+for (i in 1:nrow(new_bib)) {
+  new_bib_file <- new_bib_file %>% c(lineup(new_bib[i,]))
+}
+
+# writeLines(new_bib_file, "D:/literature/0bib/bib-2journals.bib")
+```
+
+```{r}
+
+```
+

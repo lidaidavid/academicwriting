@@ -59,7 +59,7 @@ head(cars)
 
 ---
 title: "`r title`"
-subtitle: "`r ifelse(subtitle == "", "", "str_c('——', subtitle)")`"
+subtitle: "`r ifelse(subtitle == "", "", str_c('——', subtitle))`"
 author: "`r author_str`"
 ---
 
