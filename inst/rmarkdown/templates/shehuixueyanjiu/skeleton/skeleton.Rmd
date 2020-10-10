@@ -1,6 +1,6 @@
 
 ---
-bibliography: "0-references.bib"
+bibliography: "1-references.bib"
 ---
 
 ```{r setup, include=FALSE, echo = FALSE}
@@ -17,8 +17,8 @@ affiliation <- c("")
 abstract <- ""
 keywords <- c("", "", "", "")
 author_str <- str_c(author_names, collapse = "，")
-figures <- read_csv("0-figures.csv")
-tables <- read_csv("0-tables.csv")
+figures <- readxl::read_xlsx("0-figures.xlsx")
+tables <- readxl::read_xlsx("0-tables.xlsx")
 
 
 
