@@ -50,10 +50,26 @@ m quam, at euismod massa magna at magna. @Hyde2009
 boxplot(1:8)
 ```
 
+```{r, echo=FALSE, fig.cap="Overall workflow of the end-to-end question detection framework.", out.width = '100%', fig.align='center'}
+include_graphics("image/ddmodel1.png")
+```
+
+
 # 表
 
 ```{r tab.cap="一张表", tab.id="cars"}
 head(cars)
+```
+
+```{r, echo=FALSE}
+parain <- read_xlsx("epg/data/classin.xlsx")
+
+kable(parain,
+      caption = "Key performance parameters compared to ClassIn.")
+```
+
+# 子文件
+```{r, child='D:/nuts/projects_active/replication-crisis/type.rmd'}
 ```
 
 

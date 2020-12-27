@@ -98,7 +98,11 @@ for (i in 1:nrow(new_bib)) {
 # writeLines(new_bib_file, "D:/literature/0bib/bib-2journals.bib")
 ```
 
-```{r}
+```{python}
+import plotly.graph_objects as go
+fig = go.Figure(data=go.Bar(y=[2, 3, 1]))
+fig.write_image('first_figure.png')
+
 
 ```
 

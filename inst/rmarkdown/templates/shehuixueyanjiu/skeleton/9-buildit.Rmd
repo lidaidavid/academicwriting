@@ -9,7 +9,7 @@ output:
 
 ```{r}
 if (!require("pacman")) install.packages("pacman"); library(pacman)
-p_load(academicwriting)
+p_load(academicwriting, tidyverse, render)
 ```
 
 
@@ -21,8 +21,14 @@ p_load(academicwriting)
 # file: 正文
 # target：格式调整之后成文
 
-file <- 
-target <- 
+wd <- ""
+
+filename <- ""
+targetname <- ""
+
+
+file <- str_c(wd, "/", filename, ".rmd")
+target <- str_c(wd, "/", targetname, ".rmd")
 
 
 build_rmd(file, "shehuixueyanjiu") %>% writeLines(target)
