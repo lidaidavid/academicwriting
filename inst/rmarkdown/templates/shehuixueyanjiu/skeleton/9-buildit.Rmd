@@ -9,7 +9,7 @@ output:
 
 ```{r}
 if (!require("pacman")) install.packages("pacman"); library(pacman)
-p_load(academicwriting, tidyverse, render)
+p_load(academicwriting, rmarkdown, tidyverse)
 ```
 
 
